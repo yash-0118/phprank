@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,6 +27,8 @@ Route::get('/dashboard', function () {
 Route::get('/admin', function () {
     return view('admin.index');
 })->middleware(['auth', 'role:admin'])->name('admin.index');
+
+Route::get('/admin/setting', [SettingController::class, 'general'])->middleware(['auth', 'role:admin'])->name('admin.index');
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
