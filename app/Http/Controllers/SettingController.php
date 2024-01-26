@@ -12,7 +12,8 @@ class SettingController extends Controller
     {
         // $general=new generalSetting();
         $settings = Setting::all();
-        return view('admin.setting',compact('settings'));
+        $groupedSettings = $settings->groupBy('group');
+        return view('admin.setting',compact('groupedSettings'));
        
 
 
