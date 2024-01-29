@@ -28,13 +28,16 @@ Route::get('/admin', function () {
     return view('admin.index');
 })->middleware(['auth', 'role:admin'])->name('admin.index');
 
-Route::get('/admin/setting', [SettingController::class, 'general'])->middleware(['auth', 'role:admin'])->name('admin.index');
+Route::get('/admin/setting/{group}', [SettingController::class, 'setting'])->middleware(['auth', 'role:admin', 'check_group_existence'])->name('admin.setting.general');
+
 
 Route::get('/admin/dashboard', function () {
     return view('admin.dashboard.index');
 })->middleware(['auth', 'role:admin'])->name('admin.dashboard.index');
 
 Route::get('/admin/users', [UserController::class, 'index'])->middleware(['auth', 'role:admin'])->name('admin.users.index');
+
+Route::post('/save-settings/{group}', [SettingController::class, 'saveSettings'])->name('save-settings');
 
 Route::get('/admin/pages', function () {
     return view('admin.pages.index');

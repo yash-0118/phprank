@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // 'logo_path' => env('LOGO_PATH', 'default_logo_path.jpg'),
 
     /*
      * Each settings class used in your application must be registered, you can
@@ -83,4 +84,6 @@ return [
      * need to be searched each time the application boots up.
      */
     'discovered_settings_cache_path' => base_path('bootstrap/cache'),
+
+    
 ];
