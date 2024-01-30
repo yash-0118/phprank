@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Models\Setting;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -12,6 +13,16 @@ class AdminLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.admin');
+        $generalRecords = Setting::orderBy('id')->get();
+        // dd($generalRecords);
+        $settings = [];
+        // dd($settings);
+        foreach ($generalRecords as $setting) {
+            // dd($setting);
+            $settings[$setting->name] = str_replace(['"'], '', $setting->payload);
+        }
+        // dd($settings['title']);
+        return view('layouts.admin', ['settings' => $settings]);
+        // return view('layouts.admin');
     }
 }

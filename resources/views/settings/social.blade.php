@@ -9,9 +9,9 @@
             @foreach($settingsRecords as $settingsRecord)
             <div class="mb-4">
                 <label for="{{ $settingsRecord->name }}" class="block text-gray-700 text-sm font-bold mb-2">
-                    {{ ucfirst($settingsRecord->name) }}: *
+                    {{ ucfirst($settingsRecord->name) }}:
                 </label>
-                <input type="text" name="{{ $settingsRecord->name }}" value="{{ $settingsRecord->payload }}" class="w-full px-3 py-2 border rounded shadow appearance-none" required>
+                <input type="text" name="{{ $settingsRecord->name }}" value="{{ $settingsRecord->payload }}" class="w-full px-3 py-2 border rounded shadow appearance-none">
             </div>
             @endforeach
 

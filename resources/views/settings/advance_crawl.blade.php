@@ -1,7 +1,7 @@
 <x-admin-layout>
     <x-advance-layout>
         <div class="container mx-auto p-8">
-            <h1 class="text-3xl font-bold mb-4">Advance->crawl Settings</h1>
+            <h1 class="text-3xl font-bold mb-4">Crawl Settings</h1>
 
             @if(count($settingsRecords) > 0)
             <form method="post" action="{{ route('save-settings', ['group' => 'advance_crawl']) }}" class="max-w-md mx-auto">

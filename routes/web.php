@@ -20,6 +20,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/user', function () {
+    return view('user.index');
+})->middleware(['auth', 'role:user']);
+
+Route::get('/reports', function () {
+    return view('user.reports');
+})->middleware(['auth', 'role:user'])->name('user.reports');
+
+Route::get('/projects', function () {
+    return view('user.projects');
+})->middleware(['auth', 'role:user'])->name('user.projects');
+
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -27,6 +40,11 @@ Route::get('/dashboard', function () {
 Route::get('/admin', function () {
     return view('admin.index');
 })->middleware(['auth', 'role:admin'])->name('admin.index');
+
+
+
+
+// Route::get('/dashboard', [SettingController::class, 'dynamicSetting'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/admin/setting/{group}', [SettingController::class, 'setting'])->middleware(['auth', 'role:admin', 'check_group_existence'])->name('admin.setting.general');
 
