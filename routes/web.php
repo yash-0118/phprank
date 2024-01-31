@@ -22,7 +22,7 @@ Route::get('/', function () {
 
 Route::get('/user', function () {
     return view('user.index');
-})->middleware(['auth', 'role:user']);
+})->middleware(['auth', 'role:user'])->name('user.index');
 
 Route::get('/reports', function () {
     return view('user.reports');

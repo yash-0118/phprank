@@ -14,7 +14,10 @@ class AdminLayout extends Component
     public function render(): View
     {
         $generalRecords = Setting::orderBy('id')->get();
+        $announcement_user = Setting::where('group', 'announcement_user')->orderBy('id')->get()[0];
+        // $announcement_user = str_replace(['"'], '', $announcement_user->payload);
         // dd($generalRecords);
+        // dd($announcement_user['payload']);
         $settings = [];
         // dd($settings);
         foreach ($generalRecords as $setting) {
@@ -22,7 +25,7 @@ class AdminLayout extends Component
             $settings[$setting->name] = str_replace(['"'], '', $setting->payload);
         }
         // dd($settings['title']);
-        return view('layouts.admin', ['settings' => $settings]);
+        return view('layouts.admin', ['settings' => $settings, 'announcemet_user' => $announcement_user]);
         // return view('layouts.admin');
     }
 }
