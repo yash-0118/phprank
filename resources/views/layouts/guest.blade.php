@@ -37,8 +37,8 @@
         </div>
         @endif
         <div>
-            <h1 class="text-blue-500 text-bold text-2xl">Announcements: {{str_replace(['"'], '',$announcemet_guest['payload'])}}</h1>
-           
+            <h1 class="text-blue-500 text-bold text-2xl">Announcements: {{str_replace(['"'], '',$announcemet_guest['content'])}}</h1>
+            
         </div>
 
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">

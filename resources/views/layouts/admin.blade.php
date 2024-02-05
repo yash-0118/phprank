@@ -114,9 +114,9 @@
         </nav>
     </div>
     <div class="flex flex-col w-full bg-slate-50">
-        @if($announcemet_user['payload']=="null")
+        @if($announcemet_user['content']=="null")
         @else
-        <h1 class="text-2xl"> <span class="text-blue-500"> Announcements :</span> {{str_replace(['"'], '',$announcemet_user['payload'])}}</h1>
+        <h1 class="text-2xl"> <span class="text-blue-500"> Announcements :</span> {{$announcemet_user['content']}}</h1>
         @endif
         <div class="flex w-full bg-slate-50">
 

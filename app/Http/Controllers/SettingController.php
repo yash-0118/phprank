@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
+use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
@@ -27,10 +28,11 @@ class SettingController extends Controller
     }
     public function setting($group)
     {
+        
         $settingsRecords = Setting::where('group', $group)->orderBy('id')->get();
         // dd($settingsRecords);
         foreach ($settingsRecords as $settingsRecord) {
-            $settingsRecord->payload = trim(str_replace(["\n", "\r", "\t", '"'], '', $settingsRecord->payload));
+            $settingsRecord->payload = trim(str_replace(["\n", "\r", "\t", '"', "\\"], '', $settingsRecord->payload));
         }
         // dd($settingsRecord->payload);
         $view = 'settings.' . $group;
@@ -56,10 +58,10 @@ class SettingController extends Controller
         $inputData = $request->except('_token');
         // dd($inputData);
         $rules = [
-            "custom_index" => "nullable",
-            "logo" => "nullable",
-            "favicon" => "nullable",
-            "bad_words" => "nullable",
+            // "custom_index" => "nullable",
+            // "logo" => "nullable",
+            // "favicon" => "nullable",
+            // "bad_words" => "nullable",
             "*" => 'required',
             // "facebook" => ["nullable", "regex:/^(https?:\/\/)?(www\.)?facebook\.com\/?.*/"],
             "facebook" => ["nullable", "regex:/^(?:https?:\/\/)?(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
