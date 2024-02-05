@@ -18,8 +18,8 @@
     <nav class="p-4">
         <div class="mx-auto flex justify-between items-center">
             <ul class="flex space-x-4">
-                <li><a href="{{ url('admin/setting/advance_general') }}">General Settings</a></li>
-                <li><a href="{{ url('admin/setting/advance_crawl') }}" >Crawler Settings</a></li>
+                <li><a href="{{ url('admin/setting/advanceGeneral') }}">General Settings</a></li>
+                <li><a href="{{ url('admin/setting/advanceCrawl') }}" >Crawler Settings</a></li>
             </ul>
         </div>
     </nav>

@@ -6,7 +6,7 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('advance_general.demo_url', 'www.google.com');
-        $this->migrator->add('advance_general.bad_words', 'nothing');
+        $this->migrator->add('advanceGeneral.demo_url', 'www.google.com');
+        $this->migrator->add('advanceGeneral.bad_words', 'nothing');
     }
 };

@@ -13,11 +13,9 @@ class SettingController extends Controller
     {
 
         $settingsRecords = Setting::where('group', $group)->orderBy('id')->get();
-        // dd($settingsRecords);
         foreach ($settingsRecords as $settingsRecord) {
             $settingsRecord->payload = trim(str_replace(["\n", "\r", "\t", '"', "\\"], '', $settingsRecord->payload));
         }
-        // dd($settingsRecord->payload);
         $view = 'settings.' . $group;
 
         return view($view, ['settingsRecords' => $settingsRecords, 'group' => $group]);
@@ -27,14 +25,13 @@ class SettingController extends Controller
     public function saveSettings(Request $request, $group)
     {
         $inputData = $request->except('_token');
-        // dd($inputData);
         $rules = [
 
             "*" => 'required',
 
             "facebook" => ["nullable", "regex:/^(?:https?:\/\/)?(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
 
-            "youtube" => ["nullable", "regex:/^(http:|https:)?(\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/"],
+            "youtube" => ["nullable", "regex:/^(http:|https:)?(\/\/)?(www\.)?(youtube\.com)\/(watch|embed)?(\?v=|\/)?(\S+)?/"],
 
             "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/"],
 
@@ -45,11 +42,11 @@ class SettingController extends Controller
 
         $message = [
             "*.required" => "The :attribute field is required.",
-            "facebook" => "Invalid format for Facebook.",
-            "youtube" => "Invalid format for YouTube.",
-            "twitter" => "Invalid format for Twitter.",
-            "instagram" => "Invalid format for Instagram.",
-            "demo_url" => "Invalid Url Format"
+            "facebook" => "Invalid format for Facebook. valid format:https://www.facebook.com/example_user",
+            "youtube" => "Invalid format for YouTube. valid format: https://www.youtube.com/watch?v=abcdef12345",
+            "twitter" => "Invalid format for Twitter. valid format: https://twitter.com/example_user",
+            "instagram" => "Invalid format for Instagram. valid format :https://www.instagram.com/example_user",
+            "demo_url" => "Invalid Url Format valid url: https://www.example.com/path/to/page"
         ];
         $validator = Validator::make($inputData, $rules, $message);
 
@@ -68,13 +65,12 @@ class SettingController extends Controller
                 } else {
                     return redirect()->back()->with('error', 'Only image files are allowed for ' . $name);
                 }
-                // dd(session('logo_path'));    
 
             } else {
                 if ($name == "theme") {
                     session(['theme' => $value]);
                 }
-                // dd($value);
+
                 Setting::where('group', $group)->where('name', $name)->update(['payload' => json_encode($value)]);
             }
         }
