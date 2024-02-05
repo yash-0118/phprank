@@ -13,7 +13,7 @@ class GuestLayout extends Component
      */
     public function render(): View
     {
-        $announcement_guest = Setting::where('group', 'announcement_guest')->orderBy('id')->get();
+        $announcement_guest = Setting::where('group', 'announcementGuest')->orderBy('id')->get();
         $ann_guests = [];
         foreach ($announcement_guest as $user) {
             $ann_guests[$user->name] = str_replace(['"'], '', $user->payload);

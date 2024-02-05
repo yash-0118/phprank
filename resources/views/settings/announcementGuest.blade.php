@@ -4,7 +4,7 @@
             <h1 class="text-3xl font-bold mb-4">Guests</h1>
 
             @if(count($settingsRecords) > 0)
-            <form method="post" action="{{ route('save-settings', ['group' => 'announcement_guest']) }}" class="max-w-md mx-auto">
+            <form method="post" action="{{ route('save-settings', ['group' => 'announcementGuest']) }}" class="max-w-md mx-auto">
                 @csrf
 
                 @foreach($settingsRecords as $settingsRecord)

@@ -85,13 +85,13 @@
                     @if(session('success'))
                     {{ session('success') }}
                     @endif
-
+                </p>
                 <ul>
                     @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
                     @endforeach
                 </ul>
-                </p>
+
 
             </div>
         </div>
@@ -126,13 +126,13 @@
                 @if(session('success'))
                 {{ session('success') }}
                 @endif
-
+            </p>
             <ul>
                 @foreach ($errors->all() as $error)
                 <li>{{ $error }}</li>
                 @endforeach
             </ul>
-            </p>
+
 
         </div>
     </div>

@@ -29,25 +29,25 @@ class SettingController extends Controller
 
             "*" => 'required',
 
-            "facebook" => ["nullable", "regex:/^(?:https?:\/\/)?(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
+            "facebook" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
 
-            "youtube" => ["nullable", "regex:/^(http:|https:)?(\/\/)?(www\.)?(youtube\.com)\/(watch|embed)?(\?v=|\/)?(\S+)?/"],
+            "youtube" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?youtube\.com\/(watch\?v=|@)?(\S+)?/"],
 
-            "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/"],
+            "twitter" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/"],
 
-            "instagram" => ["nullable", "regex:/^(?:(?:http|https):\/\/)?(?:www\.)?(?:instagram\.com|instagr\.am|instagr\.com)\/(\w+)/"],
+            "instagram" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?instagram\.com\/([a-zA-Z0-9_.-]+)/"],
 
-            "demo_url" => ["nullable", "regex:/^(https?:\/\/www\.|https?:\/\/|www\.)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|(https?:\/\/www\.|https?:\/\/|www\.)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?|(https?:\/\/www\.|https?:\/\/|www\.)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?$/"]
+            "demo_url" => ["nullable", "regex:/^http:\/\/127\.0\.0\.1:8000\/.*$/"]
         ];
 
         $message = [
             "*.required" => "The :attribute field is required.",
-            "facebook" => "Invalid format for Facebook. valid format:https://www.facebook.com/example_user",
+            "facebook" => "Invalid format for Facebook. valid format: https://www.facebook.com/username",
             "youtube" => "Invalid format for YouTube. valid format: https://www.youtube.com/watch?v=abcdef12345",
-            "twitter" => "Invalid format for Twitter. valid format: https://twitter.com/example_user",
-            "instagram" => "Invalid format for Instagram. valid format :https://www.instagram.com/example_user",
-            "demo_url" => "Invalid Url Format valid url: https://www.example.com/path/to/page"
-        ];
+            "twitter" => "Invalid format for Twitter. valid format: https://twitter.com/username",
+            "instagram" => "Invalid format for Instagram. valid format: https://www.instagram.com/username",
+            "demo_url" => "Invalid Url Format valid url: http://127.0.0.1:8000/reports/1"
+        ];  
         $validator = Validator::make($inputData, $rules, $message);
 
         if ($validator->fails()) {
@@ -57,20 +57,16 @@ class SettingController extends Controller
 
             if ($request->hasFile($name)) {
                 $file = $request->file($name);
-
-
                 if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
                     $path = $file->store('uploads', 'public');
                     Setting::where('group', $group)->where('name', $name)->update(['payload' => json_encode($path)]);
                 } else {
                     return redirect()->back()->with('error', 'Only image files are allowed for ' . $name);
                 }
-
             } else {
                 if ($name == "theme") {
                     session(['theme' => $value]);
                 }
-
                 Setting::where('group', $group)->where('name', $name)->update(['payload' => json_encode($value)]);
             }
         }

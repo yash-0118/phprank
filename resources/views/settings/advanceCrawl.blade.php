@@ -4,7 +4,7 @@
             <h1 class="text-3xl font-bold mb-4">Crawl Settings</h1>
 
             @if(count($settingsRecords) > 0)
-            <form method="post" action="{{ route('save-settings', ['group' => 'advance_crawl']) }}" class="max-w-md mx-auto">
+            <form method="post" action="{{ route('save-settings', ['group' => 'advanceCrawl']) }}" class="max-w-md mx-auto">
                 @csrf
 
                 @foreach($settingsRecords as $settingsRecord)
