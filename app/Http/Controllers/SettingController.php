@@ -11,6 +11,11 @@ class SettingController extends Controller
 {
     public function setting($group)
     {
+        // dd($group);
+        $splitGroup = explode("-", $group);
+        if (count($splitGroup) > 1) {
+            $group = $splitGroup[0] . ucfirst($splitGroup[1]);
+        }
 
         $settingsRecords = Setting::where('group', $group)->orderBy('id')->get();
         foreach ($settingsRecords as $settingsRecord) {
@@ -24,6 +29,10 @@ class SettingController extends Controller
 
     public function saveSettings(Request $request, $group)
     {
+        $splitGroup = explode("-", $group);
+        if (count($splitGroup) > 1) {
+            $group = $splitGroup[0] . ucfirst($splitGroup[1]);
+        }
         $inputData = $request->except('_token');
         $rules = [
 
@@ -47,7 +56,7 @@ class SettingController extends Controller
             "twitter" => "Invalid format for Twitter. valid format: https://twitter.com/username",
             "instagram" => "Invalid format for Instagram. valid format: https://www.instagram.com/username",
             "demo_url" => "Invalid Url Format valid url: http://127.0.0.1:8000/reports/1"
-        ];  
+        ];
         $validator = Validator::make($inputData, $rules, $message);
 
         if ($validator->fails()) {

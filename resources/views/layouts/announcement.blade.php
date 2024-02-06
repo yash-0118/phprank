@@ -18,8 +18,8 @@
     <nav class="p-4">
         <div class="mx-auto flex justify-between items-center">
             <ul class="flex space-x-4">
-                <li><a href="{{ url('admin/setting/announcementGuest') }}">Guests</a></li>
-                <li><a href="{{ url('admin/setting/announcementUser') }}">Users</a></li>
+                <li><a href="{{ url('admin/setting/announcement-guest') }}">Guests</a></li>
+                <li><a href="{{ url('admin/setting/announcement-user') }}">Users</a></li>
             </ul>
         </div>
     </nav>
