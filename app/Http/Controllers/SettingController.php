@@ -29,13 +29,13 @@ class SettingController extends Controller
 
             "*" => 'required',
 
-            "facebook" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
+            "facebook" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
 
-            "youtube" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?youtube\.com\/(watch\?v=|@)?(\S+)?/"],
+            "youtube" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?youtube\.com\/(watch\?v=|@)?(\S+)?/"],
 
-            "twitter" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/"],
+            "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/"],
 
-            "instagram" => ["nullable", "regex:/^http(s)?:\/\/(www\.)?instagram\.com\/([a-zA-Z0-9_.-]+)/"],
+            "instagram" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_.-]+)/"],
 
             "demo_url" => ["nullable", "regex:/^http:\/\/127\.0\.0\.1:8000\/.*$/"]
         ];
