@@ -1,10 +1,10 @@
 <x-admin-layout>
     <x-announcement-layout>
         <div class="container mx-auto p-8">
-            <h1 class="text-3xl font-bold mb-4">Users</h1>
+            <h1 class="text-3xl font-bold mb-4">Guests</h1>
 
             @if(count($settingsRecords) > 0)
-            <form method="post" action="{{ route('save-settings', ['group' => 'announcement_user']) }}" class="max-w-md mx-auto">
+            <form method="post" action="{{ route('save-settings', ['group' => 'announcementGuest']) }}" class="max-w-md mx-auto">
                 @csrf
 
                 @foreach($settingsRecords as $settingsRecord)

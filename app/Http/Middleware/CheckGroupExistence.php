@@ -18,6 +18,10 @@ class CheckGroupExistence
     public function handle(Request $request, Closure $next): Response
     {
         $group = $request->route('group');
+        $splitGroup = explode("-", $group);
+        if (count($splitGroup) > 1) {
+            $group = $splitGroup[0] . ucfirst($splitGroup[1]);
+        }
 
         if (!Setting::where('group', $group)->exists()) {
             throw new GroupNotFoundException;

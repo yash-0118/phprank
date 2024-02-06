@@ -4,7 +4,7 @@ namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class advance_crawlerSetting extends Settings
+class advanceCrawlerSetting extends Settings
 {
     public string $user_agent;
     public string $proxies;
@@ -12,6 +12,6 @@ class advance_crawlerSetting extends Settings
 
     public static function group(): string
     {
-        return 'advance_crawl';
+        return 'advanceCrawl';
     }
 }

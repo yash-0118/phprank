@@ -11,13 +11,16 @@ class SettingController extends Controller
 {
     public function setting($group)
     {
+        // dd($group);
+        $splitGroup = explode("-", $group);
+        if (count($splitGroup) > 1) {
+            $group = $splitGroup[0] . ucfirst($splitGroup[1]);
+        }
 
         $settingsRecords = Setting::where('group', $group)->orderBy('id')->get();
-        // dd($settingsRecords);
         foreach ($settingsRecords as $settingsRecord) {
             $settingsRecord->payload = trim(str_replace(["\n", "\r", "\t", '"', "\\"], '', $settingsRecord->payload));
         }
-        // dd($settingsRecord->payload);
         $view = 'settings.' . $group;
 
         return view($view, ['settingsRecords' => $settingsRecords, 'group' => $group]);
@@ -26,30 +29,33 @@ class SettingController extends Controller
 
     public function saveSettings(Request $request, $group)
     {
+        $splitGroup = explode("-", $group);
+        if (count($splitGroup) > 1) {
+            $group = $splitGroup[0] . ucfirst($splitGroup[1]);
+        }
         $inputData = $request->except('_token');
-        // dd($inputData);
         $rules = [
 
             "*" => 'required',
 
-            "facebook" => ["nullable", "regex:/^(?:https?:\/\/)?(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
+            "facebook" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+/"],
 
-            "youtube" => ["nullable", "regex:/^(http:|https:)?(\/\/)?(www\.)?(youtube\.com|youtu\.be)\/(watch|embed)?(\?v=|\/)?(\S+)?/"],
+            "youtube" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?youtube\.com\/(watch\?v=|@)(\S+)/"],
 
-            "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_]+)/"],
+            "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/"],
 
-            "instagram" => ["nullable", "regex:/^(?:(?:http|https):\/\/)?(?:www\.)?(?:instagram\.com|instagr\.am|instagr\.com)\/(\w+)/"],
+            "instagram" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_.-]+)/"],
 
-            "demo_url" => ["nullable", "regex:/^(https?:\/\/www\.|https?:\/\/|www\.)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|(https?:\/\/www\.|https?:\/\/|www\.)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?|(https?:\/\/www\.|https?:\/\/|www\.)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?$/"]
+            "demo_url" => ["nullable", "regex:/^http:\/\/127\.0\.0\.1:8000\/.*$/"]
         ];
 
         $message = [
             "*.required" => "The :attribute field is required.",
-            "facebook" => "Invalid format for Facebook.",
-            "youtube" => "Invalid format for YouTube.",
-            "twitter" => "Invalid format for Twitter.",
-            "instagram" => "Invalid format for Instagram.",
-            "demo_url" => "Invalid Url Format"
+            "facebook" => "Invalid format for Facebook. valid format: https://www.facebook.com/username",
+            "youtube" => "Invalid format for YouTube. valid format: https://www.youtube.com/watch?v=abcdef12345",
+            "twitter" => "Invalid format for Twitter. valid format: https://twitter.com/username",
+            "instagram" => "Invalid format for Instagram. valid format: https://www.instagram.com/username",
+            "demo_url" => "Invalid Url Format valid url: http://127.0.0.1:8000/reports/1"
         ];
         $validator = Validator::make($inputData, $rules, $message);
 
@@ -60,21 +66,16 @@ class SettingController extends Controller
 
             if ($request->hasFile($name)) {
                 $file = $request->file($name);
-
-
                 if ($file->isValid() && str_starts_with($file->getMimeType(), 'image/')) {
                     $path = $file->store('uploads', 'public');
                     Setting::where('group', $group)->where('name', $name)->update(['payload' => json_encode($path)]);
                 } else {
                     return redirect()->back()->with('error', 'Only image files are allowed for ' . $name);
                 }
-                // dd(session('logo_path'));    
-
             } else {
                 if ($name == "theme") {
                     session(['theme' => $value]);
                 }
-                // dd($value);
                 Setting::where('group', $group)->where('name', $name)->update(['payload' => json_encode($value)]);
             }
         }

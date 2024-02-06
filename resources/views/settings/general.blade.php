@@ -20,7 +20,7 @@
                 @elseif($settingsRecord->name == 'language')
                 <select name="{{ $settingsRecord->name }}" class="w-full px-3 py-2 border rounded shadow appearance-none" required>
                     <option value="english" {{ $settingsRecord->payload == 'english' ? 'selected' : '' }}>English</option>
-                    <option value="spanish" {{ $settingsRecord->payload == 'hindi' ? 'selected' : '' }}>Hindi</option>
+                    <option value="hindi" {{ $settingsRecord->payload == 'hindi' ? 'selected' : '' }}>Hindi</option>
                 </select>
                 @elseif($settingsRecord->name == 'timezone')
                 <select name="{{ $settingsRecord->name }}" class="w-full px-3 py-2 border rounded shadow appearance-none" required>
