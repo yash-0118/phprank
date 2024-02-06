@@ -14,7 +14,7 @@ class AdminLayout extends Component
     public function render(): View
     {
         $generalRecords = Setting::orderBy('id')->get();
-        $announcement_user = Setting::where('group', 'announcement_user')->orderBy('id')->get();
+        $announcement_user = Setting::where('group', 'announcementUser')->orderBy('id')->get();
         $settings = [];
         $ann_users = [];
         foreach ($announcement_user as $user) {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
@@ -80,5 +81,40 @@ class SettingController extends Controller
             }
         }
         return redirect()->back()->with('success', 'Settings updated successfully');
+    }
+
+    public function index(){
+        $types = Page::select('id', 'type')->get();
+        // dd($types);
+        return view('pages.index', ['types' => $types]);
+    }
+
+    public function show($id){
+        $pages = Page::where('id', $id)->get();
+
+        return view('pages.show', ['pagesRecord' => $pages, 'id' => $id]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $page = Page::find($id);
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'slug' => 'required|string|max:20',
+            'visibility' => 'required|string|max:10',
+            'content' => 'required|string',
+        ]);
+        $page->update([
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'content' => $request->input('content'),
+            'visibility' => $request->input('visibility'),
+        ]);
+        return redirect()->route('admin.pages.edit', ['id' => $page->id])->with('success', 'Page updated successfully');
+    }
+
+    public function pageShow($slug){
+        $pages = Page::where('slug', $slug)->get();
+        return view('pages.content', ['pages' => $pages]);
     }
 }

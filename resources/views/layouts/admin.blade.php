@@ -94,7 +94,15 @@
 
 
             </div>
+            <div class="fixed bottom-0 right-0 p-4 bg-gray-500">
+                <div class="flex">
+                    <a href="{{ url('admin/pages/terms') }}" class="mr-4 text-white">Terms</a>
+                    <a href="{{ url('admin/pages/privacy') }}" class="mr-4 text-white">Privacy</a>
+                </div>
+            </div>
+
         </div>
+
         @else
         <nav :class="{'block': open, 'hidden': !open}" class="flex-grow px-4 pb-4 md:block md:pb-0 bg-gray-{{$settings['theme']=='dark'?'700':'400'}} md:overflow-y-auto">
             <a class="block px-4 py-2 mt-2 text-sm font-semibold {{ request()->routeIs('user.index') ? 'bg-gray-200 text-gray-900 shadow-md' : 'text-gray-900' }} rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ route('user.index') }}">Dashboard</a>
@@ -134,6 +142,12 @@
             </ul>
 
 
+        </div>
+        <div class="fixed bottom-0 right-0 p-4 bg-gray-500">
+            <div class="flex">
+                <a href="{{ url('pages/terms') }}" class="mr-4 text-white">Terms</a>
+                <a href="{{ url('pages/privacy') }}" class="mr-4 text-white">Privacy</a>
+            </div>
         </div>
     </div>
     @endrole
