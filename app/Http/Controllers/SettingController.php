@@ -31,7 +31,7 @@ class SettingController extends Controller
 
             "facebook" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+\/?$/"],
 
-            "youtube" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?youtube\.com\/(watch\?v=|@)?(\S+)?/"],
+            "youtube" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?youtube\.com\/(watch\?v=|@)(\S+)/"],
 
             "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/"],
 
