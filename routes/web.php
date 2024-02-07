@@ -39,6 +39,8 @@ Route::middleware(['auth', 'role:user'])->group(function () {
     })->name('user.projects');
     Route::get('/pages/{slug}', [SettingController::class, 'pageShow']);
 
+    
+
 });
 
 
@@ -65,10 +67,14 @@ Route::prefix('admin')->middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/page/{id}', [SettingController::class, 'show'])->name('admin.pages.edit');
     Route::patch('/page/edit/{id}', [SettingController::class, 'update'])->name('admin.page.update');
     Route::get('/pages/{slug}',[SettingController::class,'pageShow'])->name('admin.page');
+    Route::get('/page/create/new', [SettingController::class, 'create'])->name('admin.pages.create');
+    Route::post('/pages/store/new', [SettingController::class, 'store'])->name('admin.pages.store');
+    Route::delete('/page/destroy/{id}', [SettingController::class, 'destroy'])->name('admin.pages.destroy');
 
     Route::get('/reports', function () {
         return view('admin.reports.index');
     })->name('admin.reports.index');
+
 
 
 });
