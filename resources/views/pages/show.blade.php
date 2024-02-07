@@ -19,8 +19,11 @@
                 <label for="slug" class="block text-gray-700 text-sm font-bold mb-2">
                     Slug: *
                 </label>
-                <input type="text" name="slug" value="{{ $page->slug }}" class="w-full px-3 py-2 border rounded shadow appearance-none" required>
+                <input type="text" name="slug" value="{{ $page->slug }}" class="w-full px-3 py-2 border rounded shadow appearance-none" @if($page->slug) readonly @endif
+                required
+                >
             </div>
+
 
             <div class="mb-4">
                 <label for="data" class="block text-gray-700 text-sm font-bold mb-2">

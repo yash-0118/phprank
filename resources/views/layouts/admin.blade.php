@@ -94,10 +94,10 @@
 
 
             </div>
-            <div class="fixed bottom-0 right-0 p-4 bg-gray-500">
+            <div class="fixed bottom-0 right-0 p-4 bg-gray-{{$settings['theme']=='dark'?'700':'400'}}">
                 <div class="flex">
-                    <a href="{{ url('admin/pages/terms') }}" class="mr-4 text-white">Terms</a>
-                    <a href="{{ url('admin/pages/privacy') }}" class="mr-4 text-white">Privacy</a>
+                    <a href="{{ url('admin/pages/terms') }}" class="mr-4 text">Terms</a>
+                    <a href="{{ url('admin/pages/privacy') }}" class="mr-4 text">Privacy</a>
                 </div>
             </div>
 
@@ -143,7 +143,7 @@
 
 
         </div>
-        <div class="fixed bottom-0 right-0 p-4 bg-gray-500">
+        <div class="fixed bottom-0 right-0 p-4 bg-gray-{{$settings['theme']=='dark'?'700':'400'}}">
             <div class="flex">
                 <a href="{{ url('pages/terms') }}" class="mr-4 text-white">Terms</a>
                 <a href="{{ url('pages/privacy') }}" class="mr-4 text-white">Privacy</a>
