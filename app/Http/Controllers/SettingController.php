@@ -85,13 +85,12 @@ class SettingController extends Controller
 
     public function index(){
         $types = Page::select('id', 'type')->get();
-        // dd($types);
         return view('pages.index', ['types' => $types]);
     }
 
     public function show($id){
         $pages = Page::where('id', $id)->get();
-
+        // dd($pages);
         return view('pages.show', ['pagesRecord' => $pages, 'id' => $id]);
     }
 
@@ -102,14 +101,16 @@ class SettingController extends Controller
             'name' => 'required|string|max:20',
             'slug' => 'required|string|max:20',
             'visibility' => 'required|string|max:10',
-            'content' => 'required|string',
+            'data' => 'required|string',
         ]);
+        // dd($request->input('data'));
         $page->update([
             'name' => $request->input('name'),
             'slug' => $request->input('slug'),
-            'content' => $request->input('content'),
             'visibility' => $request->input('visibility'),
+            'data' => $request->input('data'),
         ]);
+        // dd('updated');
         return redirect()->route('admin.pages.edit', ['id' => $page->id])->with('success', 'Page updated successfully');
     }
 
