@@ -122,13 +122,26 @@
         </nav>
     </div>
     <div class="flex flex-col w-full bg-slate-50">
-        @if($announcemet_user['content']=="null")
-        @else
-        <h1 class="text-2xl"> <span class="text-blue-500"> Announcements :</span> {{$announcemet_user['content']}}</h1>
+        @if($announcemet_user['content'] != "null")
+
+        @if(Auth::check() && !session('announcement_displayed'))
+        <h1 id="announcement" class="text-2xl"> <span class="text-blue-500"> Announcements :</span> {{$announcemet_user['content']}}</h1>
+
+        @php
+        session(['announcement_displayed' => true]);
+        @endphp
         @endif
+
+        @if(Auth::check())
+        <script>
+            setTimeout(function() {
+                document.getElementById('announcement').style.display = 'none';
+            }, 60000);
+        </script>
+        @endif
+        @endif
+
         <div class="flex w-full bg-slate-50">
-
-
             {{$slot}}
             <p>
                 @if(session('success'))
@@ -145,8 +158,8 @@
         </div>
         <div class="fixed bottom-0 right-0 p-4 bg-gray-{{$settings['theme']=='dark'?'700':'400'}}">
             <div class="flex">
-                <a href="{{ url('pages/terms') }}" class="mr-4 text-white">Terms</a>
-                <a href="{{ url('pages/privacy') }}" class="mr-4 text-white">Privacy</a>
+                <a href="{{ url('pages/terms') }}" class="mr-4 text">Terms</a>
+                <a href="{{ url('pages/privacy') }}" class="mr-4 text">Privacy</a>
             </div>
         </div>
     </div>
