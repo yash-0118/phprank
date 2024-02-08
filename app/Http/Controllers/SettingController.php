@@ -98,14 +98,12 @@ class SettingController extends Controller
             'visibility' => 'required|string|max:10',
             'data' => 'required|string',
         ]);
-        // dd($request->input('data'));
         $page->update([
             'name' => $request->input('name'),
             'slug' => $request->input('slug'),
             'visibility' => $request->input('visibility'),
             'data' => $request->input('data'),
         ]);
-        // dd('updated');
         return redirect()->route('admin.pages.edit', ['id' => $page->id])->with('success', 'Page updated successfully');
     }
 
