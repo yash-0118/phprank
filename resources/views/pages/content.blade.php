@@ -1,4 +1,5 @@
 <x-admin-layout>
+    @if(count($pages)>0)
     @foreach($pages as $page)
     <div class="bg-white w-full p-6 mb-6 rounded-md shadow-md">
         <h1 class="text-2xl font-bold mb-2">{{$page->name}}</h1>
@@ -8,4 +9,7 @@
         </div>
     </div>
     @endforeach
+    @else
+    <h1>Data Not Available</h1>
+    @endif
 </x-admin-layout>
