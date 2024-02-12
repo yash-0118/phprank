@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Setting;
-use Illuminate\Support\Facades\Auth;
 
 class SettingController extends Controller
 {
     public function setting($group)
     {
-        // dd($group);
         $splitGroup = explode("-", $group);
         if (count($splitGroup) > 1) {
             $group = $splitGroup[0] . ucfirst($splitGroup[1]);
@@ -30,22 +29,19 @@ class SettingController extends Controller
     public function saveSettings(Request $request, $group)
     {
         $splitGroup = explode("-", $group);
+        
         if (count($splitGroup) > 1) {
             $group = $splitGroup[0] . ucfirst($splitGroup[1]);
         }
+
         $inputData = $request->except('_token');
+
         $rules = [
-
             "*" => 'required',
-
             "facebook" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?facebook\.com\/[a-zA-Z0-9_.-]+/"],
-
             "youtube" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?youtube\.com\/(watch\?v=|@)(\S+)/"],
-
             "twitter" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?twitter\.com\/([a-zA-Z0-9_.-]+)/"],
-
             "instagram" => ["nullable", "regex:/^http(?:s)?:\/\/(?:www\.)?instagram\.com\/([a-zA-Z0-9_.-]+)/"],
-
             "demo_url" => ["nullable", "regex:/^http:\/\/127\.0\.0\.1:8000\/.*$/"]
         ];
 
@@ -80,5 +76,74 @@ class SettingController extends Controller
             }
         }
         return redirect()->back()->with('success', 'Settings updated successfully');
+    }
+
+    public function index()
+    {
+        $types = Page::select('id', 'type')->get();
+        return view('pages.index', ['types' => $types]);
+    }
+
+    public function show($id)
+    {
+        $pages = Page::where('id', $id)->get();;
+        return view('pages.show', ['pagesRecord' => $pages, 'id' => $id]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $page = Page::findOrFail($id);
+        $request->validate([
+            'name' => 'required|string|max:20',
+            'slug' => 'required|string|max:20',
+            'visibility' => 'required|string|max:10',
+            'data' => 'required|string',
+        ]);
+        $page->update([
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'visibility' => $request->input('visibility'),
+            'data' => $request->input('data'),
+        ]);
+        return redirect()->route('admin.pages.edit', ['id' => $page->id])->with('success', 'Page updated successfully');
+    }
+
+    public function pageShow($slug)
+    {
+        $pages = Page::where('slug', $slug)->get();
+        return view('pages.content', ['pages' => $pages]);
+    }
+
+    public function create()
+    {
+        return view('pages.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'type' => 'required|string|max:20',
+            'name' => 'required|string|max:20',
+            'slug' => 'required|string|max:20',
+            'visibility' => 'required|string|max:10',
+            'data' => 'required|string',
+        ]);
+
+
+        Page::create([
+            'type' => $request->input('type'),
+            'name' => $request->input('name'),
+            'slug' => $request->input('slug'),
+            'visibility' => $request->input('visibility'),
+            'data' => $request->input('data'),
+        ]);
+
+        return redirect()->route('admin.pages.index')->with('success', 'Page created successfully');
+    }
+    public function destroy($id)
+    {
+        $page = Page::findOrFail($id);
+        $page->delete();
+        return redirect()->route('admin.pages.index')->with('success', 'Page deleted successfully');
     }
 }
