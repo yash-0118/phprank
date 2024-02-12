@@ -29,7 +29,6 @@ class SettingController extends Controller
     public function saveSettings(Request $request, $group)
     {
         $splitGroup = explode("-", $group);
-        
         if (count($splitGroup) > 1) {
             $group = $splitGroup[0] . ucfirst($splitGroup[1]);
         }
