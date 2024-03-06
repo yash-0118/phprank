@@ -23,6 +23,19 @@
                 </select>
             </div>
 
+            <div class="mb-4">
+                <label for="is_active" class="block text-gray-700 text-sm font-bold mb-2">Is Active:</label>
+                <select name="is_active" id="is_active" class="w-full px-3 py-2 border rounded shadow appearance-none">
+                    @php 
+                    echo $user->is_active;
+                    @endphp
+                    <option value="1" {{ $user->is_active ? 'selected' : '' }}>Active</option>
+                    <option value="0" {{ !$user->is_active ? 'selected' : '' }}>Inactive</option>
+                </select>
+            </div>
+
+
+
             <div class="flex space-x-4">
                 <button type="submit" class="w-full bg-blue-500 text-white rounded px-4 py-2">Save</button>
                 <a href="{{ route('admin.users.index') }}" class="w-full bg-blue-500 text-white text-center rounded px-4 py-2">Back</a>

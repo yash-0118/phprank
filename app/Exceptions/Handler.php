@@ -3,8 +3,11 @@
 namespace App\Exceptions;
 
 use App\Exceptions\GroupNotFoundException;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Session\TokenMismatchException;
+use Illuminate\Support\Facades\Auth;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -30,14 +33,27 @@ class Handler extends ExceptionHandler
         });
     }
 
+
     public function render($request, Throwable $exception)
     {
+        if ($exception instanceof TokenMismatchException) {
+            Auth::logout();
+
+            throw ValidationException::withMessages([
+                'email' => [trans('Admin Account logged out so first login as a admin ')],
+            ])->redirectTo(route('login'));
+        }
         if ($exception instanceof GroupNotFoundException || $exception instanceof ModelNotFoundException) {
-            // return parent::render($request, $exception);
             abort(404);
+        }
+        if ($exception instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
+            
+            Auth::guard('web')->logout();
+            throw ValidationException::withMessages([
+                'email' => [trans('You are not authorize for this Action')],
+            ])->redirectTo(route('login'));
         }
 
         return parent::render($request, $exception);
     }
-
 }

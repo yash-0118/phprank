@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
@@ -23,7 +26,7 @@
 
 
     <div class="flex-col flex w-full md:flex md:flex-row md:min-h-screen">
-        <div @click.away="open = false" class="flex flex-col flex-shrink-0 w-full  bg-white md:w-64  bg-gray-{{$settings['theme']=='dark'?'700':'400'}}" x-data="{ open: false }">
+        <div @click.away="open = false" class="flex flex-col flex-shrink-0 w-full max-h-screen bg-white md:w-64  bg-gray-{{$settings['theme']=='dark'?'700':'400'}}" x-data="{ open: false }">
             <div class="flex flex-row items-center justify-between flex-shrink-0 px-8 py-4">
                 <a href="{{ route('admin.dashboard.index') }}" class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg focus:outline-none focus:shadow-outline">
                     @if(isset($settings['logo']) && file_exists(public_path('storage/' . $settings['logo'])))
@@ -63,6 +66,12 @@
                 <a class="block px-4 py-2 mt-2 text-sm font-semibold {{ request()->routeIs('admin.reports.index') ? 'bg-gray-200 text-gray-900 shadow-md' : 'text-gray-900' }} rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ route('admin.reports.index') }}">
                     Reports
                 </a>
+                @if(session()->has('impersonate'))
+                <form method="POST" action="/stop-impersonating" style="display: inline;">
+                    @csrf
+                    <button type="submit" class="block px-4 py-2 mt-2 text-sm font-semibold  rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Logout</button>
+                </form>
+                @else
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
@@ -71,24 +80,32 @@
                         Log Out
                     </button>
                 </form>
+                @endif
+                <a class="block px-4 py-2 mt-2 text-xl text-sm font-semibold rounded-lg hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ route('profile.edit') }}">
+                    {{ Auth::user()->name }}
+                </a>
 
 
 
             </nav>
         </div>
-        <div class="flex flex-col w-full bg-slate-50">
+        <div class=" w-full bg-slate-50">
 
-            <div class="flex w-full bg-slate-50">
+            <div class=" w-full bg-slate-50 overflow-auto max-h-screen">
 
                 {{$slot}}
                 <p>
-                    @if(session('success'))
-                    {{ session('success') }}
-                    @endif
+                    @if (session()->has('success'))
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" class="fixed bg-green-500 text-white py-2 px-4 rounded-xl bottom-3 right-3 text-sm">
+                    <p>{{ session('success') }}</p>
+                </div>
+                @endif
                 </p>
                 <ul>
                     @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" class="fixed bg-red-500 text-white py-2 px-4 rounded-xl bottom-3 right-3 text-sm">
+                        <p>{{ $error }}</p>
+                    </div>
                     @endforeach
                 </ul>
 
@@ -109,6 +126,13 @@
 
             <a class="block px-4 py-2 mt-2 text-sm font-semibold {{ request()->routeIs('user.reports') ? 'bg-gray-200 text-gray-900 shadow-md' : 'text-gray-900' }} rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{route('user.reports')}}">Reports</a>
             <a class="block px-4 py-2 mt-2 text-sm font-semibold {{ request()->routeIs('user.projects') ? 'bg-gray-200 text-gray-900 shadow-md' : 'text-gray-900' }} rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{route('user.projects')}}">Projects</a>
+            @if(session()->has('impersonate'))
+            <form method="POST" action="/stop-impersonating" style="display: inline;">
+                @csrf
+                <button type="submit" class="block px-4 py-2 mt-2 text-sm font-semibold  rounded-lg  hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline">Logout</button>
+            </form>
+            @else
+
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
 
@@ -116,7 +140,11 @@
                     Log Out
                 </button>
             </form>
-
+            
+            @endif
+            <a class="block px-4 py-2 mt-2 text-lg text-sm font-semibold rounded-lg hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline" href="{{ route('profile.edit') }}">
+                {{ Auth::user()->name }}
+            </a>
 
 
         </nav>
@@ -141,18 +169,22 @@
         @endif
         @endif
 
-        <div class="flex w-full bg-slate-50">
-            {{$slot}}
+        <div class=" w-full bg-slate-50 overflow-auto max-h-screen">
             <p>
-                @if(session('success'))
-                {{ session('success') }}
-                @endif
+                @if (session()->has('success'))
+            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" class="fixed bg-green-500 text-white py-2 px-4 rounded-xl bottom-3 right-3 text-sm">
+                <p>{{ session('success') }}</p>
+            </div>
+            @endif
             </p>
             <ul>
                 @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show" class="fixed bg-red-500 text-white py-2 px-4 rounded-xl bottom-3 right-3 text-sm">
+                    <p>{{ $error }}</p>
+                </div>
                 @endforeach
             </ul>
+            {{$slot}}
 
 
         </div>

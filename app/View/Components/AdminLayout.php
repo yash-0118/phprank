@@ -3,6 +3,8 @@
 namespace App\View\Components;
 
 use App\Models\Setting;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -23,6 +25,7 @@ class AdminLayout extends Component
         foreach ($generalRecords as $setting) {
             $settings[$setting->name] = str_replace(['"'], '', $setting->payload);
         }
-        return view('layouts.admin', ['settings' => $settings, 'announcemet_user' => $ann_users]);
+        $user=Auth::user();
+        return view('layouts.admin', ['settings' => $settings, 'announcemet_user' => $ann_users,'user'=>$user]);
     }
 }
