@@ -164,8 +164,6 @@ class DataController extends Controller
         $user = Auth::user()->id;
         $domain = $this->getDomain($url);
         $site = SiteMaster::where('user_id', $user)->where('domain', $domain)->first();
-
-
         try {
             $client = new Client();
             $response = $client->request('GET', $url);
@@ -199,7 +197,6 @@ class DataController extends Controller
 
             //RootDomain
             $rootDomain = $this->getRootDomain($parsedUrl['host']);
-
 
             $api_data = $this->score($url);
             sleep(10);
@@ -394,7 +391,6 @@ class DataController extends Controller
                 "content_length" => $content_length,
                 "ratio" => $ratio,
                 "inline_css" => json_encode($css),
-
             ];
             $sitemaster = new SiteMaster($data);
             $sitemaster->save();
@@ -464,10 +460,8 @@ class DataController extends Controller
 
             if ($res->getStatusCode() == 200) {
                 $result = json_decode($res->getBody()->getContents());
-
                 $score = $result->lighthouseResult->categories->performance->score;
                 $load_time = $result->lighthouseResult->audits->{'first-contentful-paint'}->numericValue / 1000;
-
                 $performanceData = [
                     'score' => $score * 100,
                     'load_time' => $load_time,
@@ -513,7 +507,6 @@ class DataController extends Controller
                 $headings['h' . $i][] = $textContent;
             }
         }
-
         if ($headings) {
             return $headings;
         } else {
@@ -533,8 +526,6 @@ class DataController extends Controller
                 break;
             }
         }
-
-
         if (empty($keywords)) {
             return "Content Keywords are not present";
         } else {
@@ -570,7 +561,6 @@ class DataController extends Controller
     public function metaDescription($doc)
     {
         $metaDescription = '';
-
         $metaElements = $doc->getElementsByTagName('meta');
 
         foreach ($metaElements as $element) {
@@ -629,13 +619,10 @@ class DataController extends Controller
                 $result[strtolower($tagName)] = $urls;
             }
         }
-
         $cssUrls = $this->extractCssUrls($doc, $mapFunction);
         if (!empty($cssUrls)) {
             $result['css'] = $cssUrls;
         }
-
-
         return [
             'total_http_requests' => $httpRequestsCount,
             'categories_links' => $result,
@@ -647,7 +634,6 @@ class DataController extends Controller
     private function extractCssUrls($doc, $mapFunction)
     {
         $cssUrls = [];
-
         $linkElements = $doc->getElementsByTagName('link');
         foreach ($linkElements as $element) {
             $rel = $element->getAttribute('rel');

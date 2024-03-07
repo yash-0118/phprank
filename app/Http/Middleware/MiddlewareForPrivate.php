@@ -24,18 +24,28 @@ class MiddlewareForPrivate
         if (!(auth()->check())) {
             if ($visibility === 'public') {
                 return redirect()->route('public.report', ['id' => $id]);
-            } elseif ($visibility === 'private' && auth()->check() && $user == $userId) {
-                return $next($request);
+            } elseif ($visibility === 'private') {
+                abort(403, "this Report is private");
             } elseif ($visibility === "password") {
                 return redirect()->route('password.entry.form', ['id' => $id]);
             } else {
-                abort(403, "this Report is private");
+                abort(403, "This Report is private");
             }
         } else {
             if ($visibility === 'private' && auth()->check() && $user == $userId) {
                 return $next($request);
+            } elseif ($visibility == 'public') {
+                if ($user == $userId) {
+                    return $next($request);
+                }
+                return redirect()->route('public.report', ['id' => $id]);
+            } elseif ($visibility == 'password') {
+                if ($user == $userId) {
+                    return $next($request);
+                }
+                return redirect()->route('password.entry.form', ['id' => $id]);
             } else {
-                abort(403, "this Report is private");
+                abort(403, "This Report is private");
             }
             return $next($request);
         }
