@@ -32,6 +32,9 @@ class Kernel extends HttpKernel
      * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [
+        'private' => [
+            \App\Http\Middleware\MiddlewareForPrivate::class,
+        ],
         'web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -71,5 +74,9 @@ class Kernel extends HttpKernel
         'permission' => PermissionMiddleware::class,
         'role_or_permission' => RoleOrPermissionMiddleware::class,
         'check_group_existence' => \App\Http\Middleware\CheckGroupExistence::class,
+        'middleware_for_private' => \App\Http\Middleware\MiddlewareForPrivate::class,
+        'session'=>\App\Http\Middleware\Session::class,
+        'check.impersonation'=>\App\Http\Middleware\Impersonate::class,
+        'disable_btn'=>\App\Http\Middleware\DisableBackBtn::class
     ];
 }

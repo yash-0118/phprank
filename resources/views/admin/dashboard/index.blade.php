@@ -1,17 +1,22 @@
 <x-admin-layout>
-    <!-- <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot> -->
+    <h1 class="text-2xl font-bold mb-2">Users</h1>
+    @if(count($users)>0)
+    @foreach($users as $user)
+    <div class="flex">
+        <p class="text-xl font-bold">{{ $user->name }}</p>
+        <a href="{{route('admin.user.edit', ['id' => $user->id])}}">
+            <p class="text-gray-600 text-lg pl-3">{{ $user->email }}</p>
+        </a>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    Admin Dashboard
-                </div>
-            </div>
-        </div>
+
     </div>
+
+    @endforeach
+    <a href="/admin/users">
+        <button class="bg-blue-500 mt-3 text-white p-1 rounded-md">View all</button>
+    </a>
+    @else
+    <p>No User Available</p>
+    @endif
+
 </x-admin-layout>
